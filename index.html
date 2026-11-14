@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Balcão</title>
+  <meta name="description" content="Recepcionista no WhatsApp para empresas com várias unidades: faz as perguntas certas, escolhe a unidade e entrega o cliente pronto para a equipe.">
+  <meta property="og:title" content="Balcão · recepcionista no WhatsApp">
+  <meta property="og:description" content="Atende, pergunta o que precisa, escolhe a unidade e passa o recado para a equipe.">
+  <meta name="theme-color" content="#F5A9B8">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!--
+THESIS: o produto é a recepcionista que anota o recado e entrega na unidade certa; a página é o bloco de recado de escritório, não um hero de chatbot com balões e gradiente.
+OWN-WORLD: rosa de bloco de recado em campos inteiros, tinta de caneta esferográfica azul, pautas vermelhas, picote, letra de mão para o que o bot anota, grotesca impressa para os rótulos do formulário, campainha de balcão.
+STORY: o dono de rede com várias unidades vê o cliente sendo atendido e o recado chegando pronto na unidade; acredita porque conversa com a simulação; abre o código.
+FIRST VIEWPORT: manchete à esquerda e o recado à direita se preenchendo à mão; botão "Conversar com o Balcão" à vista.
+FORM: bloco de recado telefônico.
+-->
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="topo__in">
+    <a class="marca" href="#" aria-label="Balcão, início">
+      <svg class="sino" viewBox="0 0 48 48" aria-hidden="true"><rect x="21" y="6" width="6" height="5" rx="2" fill="currentColor"/><path d="M6 34a18 18 0 0 1 36 0z" fill="currentColor"/><rect x="3" y="35" width="42" height="6" rx="3" fill="currentColor"/><path d="M14 27a11 11 0 0 1 8-9" fill="none" stroke="#F5A9B8" stroke-width="3" stroke-linecap="round"/></svg>
+      Balcão
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="#conversa">Conversar</a>
+      <a href="#por-baixo">Como funciona</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#seguranca">Segurança</a>
+    </nav>
+    <a class="btn btn--azul" href="https://github.com/cururupernatorta/whatsapp-atendimento-bot" rel="noopener">Ver o código</a>
+  </div>
+</header>
+
+<main id="conteudo">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__in">
+      <div class="hero__texto">
+        <h1>Recepcionista no WhatsApp para quem tem mais de uma unidade.</h1>
+        <p class="hero__sub">O Balcão atende o cliente, faz as perguntas que você definiu, escolhe a unidade certa e entrega o recado pronto para quem vai fechar. Ele não vende no lugar da sua equipe.</p>
+        <div class="hero__acoes">
+          <a class="btn btn--azul btn--grande" href="#conversa">Conversar com o Balcão</a>
+          <a class="btn btn--linha" href="#por-baixo">Como funciona</a>
+        </div>
+      </div>
+
+      <div class="bloco" aria-label="Exemplo de recado entregue à unidade">
+        <div class="bloco__copia" aria-hidden="true"></div>
+        <article class="recado" data-recado="hero">
+          <header class="recado__cab">
+            <span class="recado__titulo">Recado</span>
+            <span class="recado__hora"><span class="rot">Hora</span> <span class="mao" data-f="hora">09:41</span></span>
+          </header>
+          <dl class="recado__campos">
+            <div><dt>Para</dt><dd><span class="mao" data-f="para">Unidade Savassi</span></dd></div>
+            <div><dt>De</dt><dd><span class="mao" data-f="de">Ana Souza</span></dd></div>
+            <div><dt>Assunto</dt><dd><span class="mao" data-f="assunto">Avaliação para clareamento</span></dd></div>
+            <div><dt>Melhor horário</dt><dd><span class="mao" data-f="horario">De manhã</span></dd></div>
+          </dl>
+          <ul class="recado__marcas">
+            <li class="marcado"><span class="caixa" aria-hidden="true"></span>Mandou mensagem</li>
+            <li class="marcado"><span class="caixa" aria-hidden="true"></span>Pediu retorno</li>
+            <li><span class="caixa" aria-hidden="true"></span>Urgente</li>
+          </ul>
+          <p class="recado__obs"><span class="rot">Recado</span> <span class="mao" data-f="obs">Primeira vez na clínica. Quer saber preço e se dá para fazer no sábado.</span></p>
+          <p class="carimbo" aria-hidden="true">Entregue</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO -->
+  <section class="conversa" id="conversa">
+    <div class="sec">
+      <h2 class="titulo">Converse com ele</h2>
+      <p class="lead">Você é um cliente da <b>Clínica Sorriso Aberto</b>, que tem três unidades em Belo Horizonte. Responda pelos botões ou escreva. À direita, o recado que a unidade recebe.</p>
+
+      <div class="palco">
+        <div class="chat" aria-label="Simulação da conversa">
+          <div class="chat__topo">
+            <span class="chat__avatar" aria-hidden="true">SA</span>
+            <div><b>Clínica Sorriso Aberto</b><span data-status>online</span></div>
+          </div>
+          <ol class="chat__msgs" data-msgs aria-live="polite"></ol>
+          <div class="chat__rapidas" data-rapidas></div>
+          <form class="chat__form" data-form>
+            <label class="sr" for="chat-texto">Sua mensagem</label>
+            <input id="chat-texto" autocomplete="off" placeholder="Escreva uma mensagem" maxlength="160">
+            <button type="submit" class="chat__enviar" aria-label="Enviar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20l18-8L3 4l2 7 9 1-9 1z" fill="currentColor"/></svg>
+            </button>
+          </form>
+        </div>
+
+        <div class="lado">
+          <div class="bloco bloco--demo">
+            <div class="bloco__copia" aria-hidden="true"></div>
+            <article class="recado" data-recado="demo" aria-live="polite">
+              <header class="recado__cab">
+                <span class="recado__titulo">Recado</span>
+                <span class="recado__hora"><span class="rot">Hora</span> <span class="mao" data-f="hora"></span></span>
+              </header>
+              <dl class="recado__campos">
+                <div><dt>Para</dt><dd><span class="mao" data-f="para"></span></dd></div>
+                <div><dt>De</dt><dd><span class="mao" data-f="de"></span></dd></div>
+                <div><dt>Assunto</dt><dd><span class="mao" data-f="assunto"></span></dd></div>
+                <div><dt>Melhor horário</dt><dd><span class="mao" data-f="horario"></span></dd></div>
+              </dl>
+              <ul class="recado__marcas">
+                <li data-m="msg"><span class="caixa" aria-hidden="true"></span>Mandou mensagem</li>
+                <li data-m="humano"><span class="caixa" aria-hidden="true"></span>Pediu atendente</li>
+                <li data-m="urgente"><span class="caixa" aria-hidden="true"></span>Urgente</li>
+              </ul>
+              <p class="recado__obs"><span class="rot">Recado</span> <span class="mao" data-f="obs"></span></p>
+              <p class="carimbo" aria-hidden="true">Entregue</p>
+            </article>
+          </div>
+
+          <div class="controles">
+            <label class="troca">
+              <input type="checkbox" data-fechado>
+              <span class="troca__trilho" aria-hidden="true"></span>
+              Simular mensagem fora do horário
+            </label>
+            <button type="button" class="btn btn--linha btn--pequeno" data-humano>Pedir para falar com uma pessoa</button>
+            <button type="button" class="btn btn--linha btn--pequeno" data-recomecar>Recomeçar</button>
+          </div>
+          <p class="aviso">Simulação roteirizada, roda só no seu navegador. O bot de verdade conversa pela API do Claude e segue o roteiro que cada empresa configura.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR BAIXO -->
+  <section class="por-baixo" id="por-baixo">
+    <div class="sec">
+      <h2 class="titulo">O que acontece entre a mensagem e o recado</h2>
+      <ol class="fluxo">
+        <li>
+          <h3>Chega pelo webhook</h3>
+          <p>Cada empresa tem a própria URL, com um segredo que é conferido em tempo constante. Segredo errado, requisição recusada.</p>
+          <code>/webhook/:cliente/:segredo</code>
+        </li>
+        <li>
+          <h3>Espera você terminar</h3>
+          <p>Mensagens mandadas em sequência são juntadas por 4 segundos antes de ir para o modelo, como uma pessoa que espera o cliente terminar de falar.</p>
+          <code>messageBuffer · 4 s</code>
+        </li>
+        <li>
+          <h3>O modelo responde</h3>
+          <p>O Claude recebe a base de conhecimento, as unidades, os horários e o roteiro da empresa. A parte fixa do prompt fica em cache para custar menos.</p>
+          <code>botService → Claude API</code>
+        </li>
+        <li>
+          <h3>As marcas viram ação</h3>
+          <p>O modelo sinaliza o estado com marcas curtas. Elas são tiradas antes de qualquer coisa chegar ao cliente.</p>
+          <code>[FILIAL:N] [LEAD_PRONTO] [HUMANO] [NOME:x]</code>
+        </li>
+      </ol>
+
+      <div class="marcas" data-marcas>
+        <div class="marcas__abas" role="tablist" aria-label="Ver a resposta">
+          <button type="button" role="tab" id="aba-modelo" aria-selected="true" aria-controls="painel-marcas" data-aba="modelo">O que o modelo respondeu</button>
+          <button type="button" role="tab" id="aba-cliente" aria-selected="false" aria-controls="painel-marcas" data-aba="cliente" tabindex="-1">O que o cliente vê</button>
+        </div>
+        <div class="marcas__painel" id="painel-marcas" role="tabpanel" aria-labelledby="aba-modelo">
+          <p class="marcas__texto" data-marcas-texto>Perfeito, Ana! A unidade Savassi fica na Rua Pernambuco e abre sábado de manhã. Já passei seu pedido para a equipe de lá, eles te chamam por aqui ainda hoje. <mark>[NOME:Ana]</mark> <mark>[FILIAL:2]</mark> <mark>[LEAD_PRONTO]</mark></p>
+          <ul class="marcas__acoes" data-marcas-acoes>
+            <li><code>[NOME:Ana]</code> salva o nome do cliente na conversa</li>
+            <li><code>[FILIAL:2]</code> escolhe a unidade Savassi</li>
+            <li><code>[LEAD_PRONTO]</code> manda o resumo para a unidade, com botão para assumir a conversa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECURSOS -->
+  <section class="recursos" id="recursos">
+    <div class="sec">
+      <h2 class="titulo">Um servidor, muitas empresas</h2>
+      <div class="recursos__grade">
+        <div class="recurso recurso--grande">
+          <h3>Cada empresa com o seu balcão</h3>
+          <p>Base de conhecimento, unidades, horários e perguntas de triagem próprias. Uma instalação atende vários clientes sem misturar nada.</p>
+        </div>
+        <div class="recurso">
+          <h3>Roteiro que você escreve</h3>
+          <p>A lista de perguntas que o cliente precisa responder antes de virar recado é definida por empresa.</p>
+        </div>
+        <div class="recurso">
+          <h3>Fechado é fechado</h3>
+          <p>Fora do horário a resposta é um texto fixo, sem chamar o modelo.</p>
+        </div>
+        <div class="recurso">
+          <h3>Uma pessoa a qualquer momento</h3>
+          <p>O cliente pode pedir atendente. A unidade é avisada e o bot continua respondendo enquanto ninguém assume.</p>
+        </div>
+        <div class="recurso">
+          <h3>Recado não fica esquecido</h3>
+          <p>Se a unidade não responde em 30 minutos, ela recebe um lembrete.</p>
+        </div>
+        <div class="recurso">
+          <h3>Custo sob controle</h3>
+          <p>Cache de prompt, contexto curto e uso de tokens contado por empresa. No limite do plano o bot continua atendendo e o excedente é registrado.</p>
+        </div>
+        <div class="recurso recurso--grande">
+          <h3>Relatório toda semana e painel de administração</h3>
+          <p>Resumo semanal para cada empresa e para quem opera. No painel: cadastro de clientes, recados recebidos e estatísticas de uso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEGURANÇA -->
+  <section class="seguranca" id="seguranca">
+    <div class="sec seguranca__in">
+      <div>
+        <h2 class="titulo">Feito para não vazar</h2>
+        <p class="lead">Um bot que recebe mensagem de cliente pela internet é uma porta aberta. Estas são as trancas.</p>
+      </div>
+      <ul class="trancas">
+        <li><b>Nenhum segredo no repositório.</b> Tudo vem de variáveis de ambiente, e o servidor se recusa a subir sem <code>MONGODB_URI</code>, <code>CLAUDE_API_KEY</code> e <code>ADMIN_PASSWORD</code>.</li>
+        <li><b>Segredo por empresa no webhook,</b> comparado com <code>crypto.timingSafeEqual</code> para não vazar informação pelo tempo de resposta.</li>
+        <li><b>Cabeçalhos de segurança</b> com <code>helmet</code> e limite de requisições com <code>express-rate-limit</code> no webhook e no painel.</li>
+        <li><b>Painel na mesma origem,</b> com política de segurança de conteúdo e senha por bearer na API de administração.</li>
+        <li><b>Teste que não dispara sem querer.</b> As ferramentas de teste se recusam a mandar mensagem de verdade para uma empresa com gateway ativo sem uma confirmação digitada.</li>
+        <li><b>Transporte isolado.</b> Todo o código do gateway fica em dois arquivos, então dá para trocar pela API oficial do WhatsApp Business sem mexer na conversa.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CÓDIGO -->
+  <section class="codigo">
+    <div class="sec codigo__in">
+      <div>
+        <h2 class="titulo">Rode na sua máquina</h2>
+        <p class="lead">Node.js 18+, Express, MongoDB, API do Claude, Jest. O <code>test-local</code> conversa com o bot no terminal sem mandar nada pelo WhatsApp.</p>
+        <a class="btn btn--azul btn--grande" href="https://github.com/cururupernatorta/whatsapp-atendimento-bot" rel="noopener">Abrir no GitHub</a>
+      </div>
+      <div class="terminal" role="region" aria-label="Comandos para rodar o projeto">
+        <div class="terminal__cab"><span></span><span></span><span></span></div>
+<pre><code><span class="c"># instalar e configurar</span>
+cd bot-saas-v3-claude
+npm install
+cp .env.example .env
+
+<span class="c"># subir o servidor</span>
+npm start
+
+<span class="c"># conversar com o bot no terminal</span>
+npm run test-local
+
+<span class="c"># criar uma empresa de exemplo</span>
+npm run seed-exemplo
+
+<span class="c"># testes</span>
+npm test</code></pre>
+        <button type="button" class="terminal__copiar" data-copiar>Copiar</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="sec rodape__in">
+    <p class="marca marca--rodape">
+      <svg class="sino" viewBox="0 0 48 48" aria-hidden="true"><rect x="21" y="6" width="6" height="5" rx="2" fill="currentColor"/><path d="M6 34a18 18 0 0 1 36 0z" fill="currentColor"/><rect x="3" y="35" width="42" height="6" rx="3" fill="currentColor"/></svg>
+      Balcão
+    </p>
+    <p>Página de apresentação do projeto <a href="https://github.com/cururupernatorta/whatsapp-atendimento-bot" rel="noopener">whatsapp-atendimento-bot</a>. A Clínica Sorriso Aberto e as pessoas da conversa são fictícias. WhatsApp e Claude são marcas dos seus donos.</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
