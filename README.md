@@ -1,10 +1,10 @@
 # Balcão · landing page for a WhatsApp receptionist bot
 
-Product page for [whatsapp-atendimento-bot](https://github.com/cururupernatorta/whatsapp-atendimento-bot), my multi-tenant WhatsApp customer-service bot (Node.js, Express, MongoDB, Claude API). The bot talks to the customer, runs an intake questionnaire, picks the right branch and hands the qualified lead to a human with a short summary.
+Product page for [whatsapp-atendimento-bot](https://github.com/GuilhermeBSthyrmer/whatsapp-atendimento-bot), my multi-tenant WhatsApp customer-service bot (Node.js, Express, MongoDB, Claude API). The bot talks to the customer, runs an intake questionnaire, picks the right branch and hands the qualified lead to a human with a short summary.
 
 The page is in Portuguese, the bot's market.
 
-**Live:** `https://cururupernatorta.github.io/balcao-atendimento-site/` (after GitHub Pages is enabled)
+**Live:** https://guilhermebsthyrmer.github.io/balcao-atendimento-site/
 
 ## Design
 
