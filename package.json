@@ -1,0 +1,12 @@
+{
+  "name": "balcao-atendimento-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node tests/servidor.mjs",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1"
+  }
+}

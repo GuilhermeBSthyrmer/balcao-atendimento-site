@@ -78,7 +78,6 @@
   const status = $('[data-status]');
   const chkFechado = $('[data-fechado]');
   let est;
-  let ocupado = false;
   let geracao = 0; // invalida respostas pendentes ao recomeçar
 
   function novoEstado() {
@@ -264,29 +263,31 @@
     if (est.etapa === 'horario') return opcoes(HORARIOS.map((x) => x.nome));
   }
 
-  async function enviar(texto) {
+  // Mensagens mandadas enquanto o bot ainda responde entram numa fila, em ordem,
+  // como no bot de verdade. Antes elas eram descartadas sem aviso.
+  let fila = Promise.resolve();
+  function enviar(texto) {
     texto = texto.trim();
-    if (!texto || ocupado) return;
-    ocupado = true;
+    if (!texto) return;
     opcoes([]);
     balao('eu', texto);
     input.value = '';
-    try {
+    const g = geracao;
+    fila = fila.then(async () => {
+      if (g !== geracao) return;
       if (chkFechado.checked && !est.fim) {
         marcar(recado, 'msg');
         await bot('Olá! A Clínica Sorriso Aberto está fechada agora. Atendemos de segunda a sexta, das 8h às 19h, e sábado das 8h às 12h. Deixe sua mensagem que a equipe responde assim que abrir.', 'resposta fixa, sem chamar o modelo');
-        balao('sistema', 'Desligue “fora do horário” para continuar a conversa.');
+        if (g === geracao) balao('sistema', 'Desligue “fora do horário” para continuar a conversa.');
       } else {
         await responder(texto);
       }
-    } finally {
-      ocupado = false;
-    }
+    }).catch(() => {});
   }
 
   function recomecar() {
     geracao++;
-    ocupado = false;
+    fila = Promise.resolve();
     est = novoEstado();
     msgs.replaceChildren();
     recado.classList.remove('is-entregue');

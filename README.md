@@ -1,5 +1,7 @@
 # Balcão · landing page for a WhatsApp receptionist bot
 
+[![CI](https://github.com/GuilhermeBSthyrmer/balcao-atendimento-site/actions/workflows/ci.yml/badge.svg)](https://github.com/GuilhermeBSthyrmer/balcao-atendimento-site/actions/workflows/ci.yml) [![CodeQL](https://github.com/GuilhermeBSthyrmer/balcao-atendimento-site/actions/workflows/codeql.yml/badge.svg)](https://github.com/GuilhermeBSthyrmer/balcao-atendimento-site/actions/workflows/codeql.yml)
+
 Product page for [whatsapp-atendimento-bot](https://github.com/GuilhermeBSthyrmer/whatsapp-atendimento-bot), my multi-tenant WhatsApp customer-service bot (Node.js, Express, MongoDB, Claude API). The bot talks to the customer, runs an intake questionnaire, picks the right branch and hands the qualified lead to a human with a short summary.
 
 The page is in Portuguese, the bot's market.
@@ -28,10 +30,22 @@ The demo is scripted and runs only in the browser. The real bot uses the Claude 
 - Strict Content Security Policy: no inline scripts or styles, `connect-src 'none'`. Dynamic values are set through the CSSOM.
 - Live regions announce new chat messages; reduced-motion users get the final state without animation.
 
+## Tests
+
+End-to-end tests with [Playwright](https://playwright.dev/), each scenario run on a desktop and a mobile viewport (Chromium). 5 scenarios: a full conversation fills and delivers the message slip, a neighbourhood is routed to the nearest branch while the customer asks for a person, the out-of-hours reply is fixed text, and the model/customer tabs work with arrow keys.
+
+Every push runs the suite on GitHub Actions, together with Lighthouse (accessibility and best practices must score 90 or more) and CodeQL security analysis. Dependabot keeps the dependencies up to date.
+
+```bash
+npm install
+npx playwright install chromium
+npm test
+```
+
 ## Run locally
 
 ```bash
-npx serve .
+npm start   # http://localhost:4180
 ```
 
 ## Structure
