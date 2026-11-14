@@ -1,6 +1,8 @@
 // Servidor estático usado pelos testes (Playwright sobe este arquivo antes de rodar).
+// Lê o arquivo direto, sem checar antes com stat: checar e depois ler abre uma
+// janela de corrida entre as duas chamadas (CodeQL js/file-system-race).
 import http from 'node:http';
-import { readFile, stat } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const RAIZ = path.resolve(process.cwd());
@@ -11,17 +13,26 @@ const TIPOS = {
   '.webp': 'image/webp', '.jpg': 'image/jpeg', '.ico': 'image/x-icon',
 };
 
-http.createServer(async (req, res) => {
+async function ler(arquivo) {
   try {
-    const caminho = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-    let arquivo = path.join(RAIZ, caminho);
-    if (!arquivo.startsWith(RAIZ)) { res.writeHead(403).end(); return; }
-    let s = await stat(arquivo).catch(() => null);
-    if (s && s.isDirectory()) { arquivo = path.join(arquivo, 'index.html'); s = await stat(arquivo).catch(() => null); }
-    if (!s) { res.writeHead(404).end('404'); return; }
-    res.writeHead(200, { 'content-type': TIPOS[path.extname(arquivo)] || 'application/octet-stream', 'cache-control': 'no-store' });
-    res.end(await readFile(arquivo));
+    return { corpo: await readFile(arquivo), arquivo };
   } catch (e) {
-    res.writeHead(500).end(String(e));
+    if (e.code !== 'EISDIR') throw e;
+    const indice = path.join(arquivo, 'index.html');
+    return { corpo: await readFile(indice), arquivo: indice };
+  }
+}
+
+http.createServer(async (req, res) => {
+  const caminho = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  const pedido = path.join(RAIZ, caminho);
+  if (pedido !== RAIZ && !pedido.startsWith(RAIZ + path.sep)) { res.writeHead(403).end(); return; }
+  try {
+    const { corpo, arquivo } = await ler(pedido);
+    res.writeHead(200, { 'content-type': TIPOS[path.extname(arquivo)] || 'application/octet-stream', 'cache-control': 'no-store' });
+    res.end(corpo);
+  } catch (e) {
+    const naoExiste = e.code === 'ENOENT' || e.code === 'ENOTDIR';
+    res.writeHead(naoExiste ? 404 : 500).end(naoExiste ? '404' : 'erro');
   }
 }).listen(PORTA, () => console.log(`servindo ${RAIZ} em http://localhost:${PORTA}`));
