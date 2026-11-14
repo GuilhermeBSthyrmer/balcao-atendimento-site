@@ -32,7 +32,7 @@ The demo is scripted and runs only in the browser. The real bot uses the Claude 
 
 ## Tests
 
-End-to-end tests with [Playwright](https://playwright.dev/), each scenario run on a desktop and a mobile viewport (Chromium). 5 scenarios: a full conversation fills and delivers the message slip, a neighbourhood is routed to the nearest branch while the customer asks for a person, the out-of-hours reply is fixed text, and the model/customer tabs work with arrow keys.
+End-to-end tests with [Playwright](https://playwright.dev/), each scenario run on a desktop and a mobile viewport (Chromium). 6 scenarios: the hand-written slip ends with every letter visible, a full conversation fills and delivers the message slip, a neighbourhood is routed to the nearest branch while the customer asks for a person, the out-of-hours reply is fixed text, and the model/customer tabs work with arrow keys.
 
 Every push runs the suite on GitHub Actions, together with Lighthouse (accessibility and best practices must score 90 or more) and CodeQL security analysis. Dependabot keeps the dependencies up to date.
 

@@ -23,7 +23,12 @@
     el.style.animationDelay = `${atraso}ms`;
     el.classList.remove('escrevendo');
     void el.offsetWidth; // reinicia a animação
-    if (!reduz) el.classList.add('escrevendo');
+    if (!reduz) {
+      el.classList.add('escrevendo');
+      // O Chrome às vezes para o steps() um passo antes do fim por arredondamento,
+      // cortando a última letra. Ao terminar, tira a animação e mostra o texto inteiro.
+      el.addEventListener('animationend', () => el.classList.remove('escrevendo'), { once: true });
+    }
   }
   const marcar = (recado, chave, sim = true) => $(`[data-m="${chave}"]`, recado)?.classList.toggle('marcado', sim);
 

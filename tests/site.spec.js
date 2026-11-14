@@ -24,6 +24,17 @@ test.describe('Balcão', () => {
     expect(erros).toEqual([]);
   });
 
+  test('o recado do topo termina com o texto inteiro à mostra', async ({ page }) => {
+    // Este teste roda com animação: o defeito só aparece quando a escrita à mão anima.
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/');
+    const horario = page.locator('[data-recado="hero"] [data-f="horario"]');
+    await expect(page.locator('[data-recado="hero"]')).toHaveClass(/is-entregue/, { timeout: 15000 });
+    await expect(horario).toHaveText('De manhã');
+    await expect(horario).not.toHaveClass(/escrevendo/);
+    expect(await horario.evaluate((e) => getComputedStyle(e).clipPath)).toBe('none');
+  });
+
   test('conversa completa preenche e entrega o recado', async ({ page }) => {
     await page.goto('/#conversa');
     await page.getByRole('button', { name: 'Oi, queria marcar uma avaliação' }).click();
